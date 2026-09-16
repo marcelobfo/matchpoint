@@ -960,12 +960,17 @@ CREATE TABLE IF NOT EXISTS public.users (
     tenant_id TEXT REFERENCES public.tenants(id) ON DELETE CASCADE,
     full_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    password TEXT DEFAULT 'sucesso@2027@',
     role TEXT NOT NULL DEFAULT 'promoter',
     phone TEXT,
     avatar_url TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS password TEXT DEFAULT 'sucesso@2027@';
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS avatar_url TEXT;
 
 -- 5. Tabela: Veterinarians (Base Centralizada Master de Veterinários)
 CREATE TABLE IF NOT EXISTS public.veterinarians (

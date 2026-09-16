@@ -158,7 +158,7 @@ export const StorageService = {
     return stored;
   },
 
-  addUser: (user: Omit<User, 'id' | 'created_at'>): User => {
+  addUser: (user: Omit<User, 'id' | 'created_at'>, initialPassword?: string): User => {
     const list = StorageService.getUsers();
     const newUser: User = {
       ...user,
@@ -167,20 +167,63 @@ export const StorageService = {
     };
     list.push(newUser);
     setLocal(STORAGE_KEYS.USERS, list);
+
+    if (initialPassword && initialPassword.trim()) {
+      const customPasswords = getLocal<Record<string, string>>(STORAGE_KEYS.CUSTOM_PASSWORDS, {});
+      customPasswords[newUser.email.trim().toLowerCase()] = initialPassword.trim();
+      setLocal(STORAGE_KEYS.CUSTOM_PASSWORDS, customPasswords);
+    }
+
     SupabaseService.autoSyncEntity('users', newUser);
     return newUser;
   },
 
-  updateUser: (id: string, updates: Partial<User>): User | null => {
+  setUserPassword: (email: string, newPassword: string): boolean => {
+    const trimmedEmail = email.trim().toLowerCase();
+    const customPasswords = getLocal<Record<string, string>>(STORAGE_KEYS.CUSTOM_PASSWORDS, {});
+    customPasswords[trimmedEmail] = newPassword;
+    setLocal(STORAGE_KEYS.CUSTOM_PASSWORDS, customPasswords);
+    return true;
+  },
+
+  getUserPassword: (email: string): string => {
+    const trimmedEmail = email.trim().toLowerCase();
+    const customPasswords = getLocal<Record<string, string>>(STORAGE_KEYS.CUSTOM_PASSWORDS, {});
+    return customPasswords[trimmedEmail] || 'sucesso@2027@';
+  },
+
+  toggleUserStatus: (id: string): User | null => {
     const list = StorageService.getUsers();
     const index = list.findIndex((u) => u.id === id);
     if (index === -1) return null;
+    list[index].is_active = !list[index].is_active;
+    setLocal(STORAGE_KEYS.USERS, list);
+    SupabaseService.autoSyncEntity('users', list[index]);
+    return list[index];
+  },
+
+  updateUser: (id: string, updates: Partial<User>, newPassword?: string): User | null => {
+    const list = StorageService.getUsers();
+    const index = list.findIndex((u) => u.id === id);
+    if (index === -1) return null;
+    const oldEmail = list[index].email.trim().toLowerCase();
     const updated: User = {
       ...list[index],
       ...updates
     };
     list[index] = updated;
     setLocal(STORAGE_KEYS.USERS, list);
+
+    if (newPassword && newPassword.trim()) {
+      const customPasswords = getLocal<Record<string, string>>(STORAGE_KEYS.CUSTOM_PASSWORDS, {});
+      const newEmail = updated.email.trim().toLowerCase();
+      customPasswords[newEmail] = newPassword.trim();
+      if (oldEmail !== newEmail && customPasswords[oldEmail]) {
+        delete customPasswords[oldEmail];
+      }
+      setLocal(STORAGE_KEYS.CUSTOM_PASSWORDS, customPasswords);
+    }
+
     SupabaseService.autoSyncEntity('users', updated);
     return updated;
   },

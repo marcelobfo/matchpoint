@@ -9,6 +9,7 @@ import { ArchitectureModule } from './components/ArchitectureModule';
 import { SupabaseModule } from './components/SupabaseModule';
 import { EvolutionApiModule } from './components/EvolutionApiModule';
 import { ContratantesModule } from './components/ContratantesModule';
+import { UsersAndPromotersModule } from './components/UsersAndPromotersModule';
 import { BirthdayNotificationBanner } from './components/BirthdayNotificationBanner';
 import { VetProfileDossierModal } from './components/VetProfileDossierModal';
 import { OfflineIndicator } from './components/OfflineIndicator';
@@ -318,6 +319,19 @@ export default function App() {
           )}
 
           {/* SENSITIVE MODULES: ONLY SUPER ADMIN (MATCH POINT GESTOR MASTER) */}
+          {(activeTab === 'usuarios' || activeTab === 'promoter-analytics') && currentUser.role === 'super_admin' && (
+            <UsersAndPromotersModule
+              users={users}
+              tenants={tenants}
+              vets={vets}
+              visits={visits}
+              reports={reports}
+              tasks={tasks}
+              currentUserId={currentUserId}
+              onDataChanged={reloadData}
+            />
+          )}
+
           {activeTab === 'contratantes' && currentUser.role === 'super_admin' && (
             <ContratantesModule
               tenants={tenants}

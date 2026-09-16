@@ -131,6 +131,16 @@ export const INITIAL_USERS: User[] = [
     created_at: '2026-01-15T00:00:00Z'
   },
   {
+    id: 'user-promoter-juliana',
+    tenant_id: null,
+    full_name: 'Juliana Vasconcelos',
+    email: 'juliana.promotora@matchpoint.com.br',
+    role: 'promoter',
+    phone: '(11) 98341-9922',
+    is_active: true,
+    created_at: '2026-02-01T00:00:00Z'
+  },
+  {
     id: 'user-client-mova',
     tenant_id: 'tenant-mova',
     full_name: 'Dr. Roberto Almeida (Diretor Mova)',
@@ -325,6 +335,32 @@ export const INITIAL_VISITS: Visit[] = [
     general_notes: 'Visita técnica sobre protocolos de ressonância e agendamentos no fim de semana.',
     photos: [],
     created_at: '2026-09-14T09:20:00Z'
+  },
+  {
+    id: 'visit-juliana-001',
+    promoter_id: 'user-promoter-juliana',
+    veterinarian_id: 'vet-camila-silveira',
+    visit_date: '2026-09-15',
+    check_in_timestamp: '2026-09-15T15:10:00Z',
+    location_lat: -23.5701,
+    location_lng: -46.6534,
+    workplace_name_snapshot: 'Hospital Veterinário PetCare Jardim Paulista',
+    general_notes: 'Apresentação institucional CardioPet e VetLab. Dra. Camila confirmou início dos encaminhamentos.',
+    photos: [],
+    created_at: '2026-09-15T15:10:00Z'
+  },
+  {
+    id: 'visit-juliana-002',
+    promoter_id: 'user-promoter-juliana',
+    veterinarian_id: 'vet-fernando-becker',
+    visit_date: '2026-09-16',
+    check_in_timestamp: '2026-09-16T11:00:00Z',
+    location_lat: -23.5891,
+    location_lng: -46.6389,
+    workplace_name_snapshot: 'Hospital Veterinário Prime 24 Horas',
+    general_notes: 'Visita de alinhamento com a UTI móvel. Apresentação do serviço de ecocardiograma móvel da CardioPet.',
+    photos: [],
+    created_at: '2026-09-16T11:00:00Z'
   }
 ];
 
@@ -398,6 +434,26 @@ export const INITIAL_VISIT_REPORTS: VisitReport[] = [
     service_interest: 'Mapeamento Eletrofisiológico e Holter 24h Felino',
     critical_action_needed: false,
     created_at: '2026-09-12T16:00:00Z'
+  },
+  {
+    id: 'rep-cardiopet-002',
+    visit_id: 'visit-juliana-001',
+    tenant_id: 'tenant-cardiopet',
+    observations: 'Dra. Camila solicitou tabela de exames cardiológicos da CardioPet e material para prescrição.',
+    sentiment: 'positive',
+    service_interest: 'Ecocardiograma e Telemedicina Cardiológica',
+    critical_action_needed: false,
+    created_at: '2026-09-15T15:10:00Z'
+  },
+  {
+    id: 'rep-cardiopet-003',
+    visit_id: 'visit-juliana-002',
+    tenant_id: 'tenant-cardiopet',
+    observations: 'Dr. Fernando aprovou o protocolo de emergência cardiológica da CardioPet para plantão de UTI.',
+    sentiment: 'positive',
+    service_interest: 'Suporte de UTI e Marcapasso',
+    critical_action_needed: false,
+    created_at: '2026-09-16T11:00:00Z'
   }
 ];
 

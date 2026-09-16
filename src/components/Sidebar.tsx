@@ -20,7 +20,9 @@ import {
   Lock,
   Wifi,
   WifiOff,
-  BookOpen
+  BookOpen,
+  Users,
+  BarChart3
 } from 'lucide-react';
 import { Tenant, User, UserRole } from '../types';
 import { MatchPointLogo } from './MatchPointLogo';
@@ -160,6 +162,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       category: 'management'
     },
     // SENSITIVE ADMIN ONLY MODULES (Match Point Gestor Master)
+    {
+      id: 'usuarios',
+      label: 'Usuários & Promotores',
+      fullLabel: 'Gestão de Usuários & Promotores',
+      sublabel: 'Cadastro & Aproveitamento Individual',
+      icon: Users,
+      badge: 'Super Admin',
+      badgeColor: 'bg-[#FF530D]',
+      allowedRoles: ['super_admin'],
+      category: 'admin'
+    },
     {
       id: 'contratantes',
       label: 'Contratantes',
